@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./App.css";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
 function AdminDashboard() {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
 function Topbar() {
   const user = JSON.parse(localStorage.getItem("user"));

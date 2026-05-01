@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import "./App.css";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
 function Notifications() {
   const user = JSON.parse(localStorage.getItem("user"));

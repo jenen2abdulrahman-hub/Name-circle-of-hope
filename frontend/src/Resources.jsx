@@ -4,7 +4,7 @@ import Layout from "./Layout";
 import "./App.css";
 import Chatbot from "./Chatbot";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
 function Resources() {
   const [user, setUser] = useState(null);
