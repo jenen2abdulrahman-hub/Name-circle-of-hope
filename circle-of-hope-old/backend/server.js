@@ -702,6 +702,9 @@ app.post("/chatbot", async (req, res) => {
     return res.status(500).json({ reply: "Server error" });
   }
 });
+app.get("/", (req, res) => {
+  res.send("Circle of Hope backend is running ✅");
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
