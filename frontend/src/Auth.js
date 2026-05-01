@@ -32,8 +32,8 @@ function Auth() {
 }
     try {
       const url = isLogin
-        ? "http://localhost:5000/login"
-        : "http://localhost:5000/register";
+           ? "https://circle-of-hope-backend.onrender.com/login"
+    : "https://circle-of-hope-backend.onrender.com/register";
 
       let res;
 
