@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
 const topics = [
   { title: "Autism Support", icon: "🧩" },
