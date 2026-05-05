@@ -4,6 +4,7 @@ import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import SpecialistAdvice from "./SpecialistAdvice";
 
 const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
@@ -32,6 +33,7 @@ function Dashboard() {
   const [selectedStory, setSelectedStory] = useState(null);
 
   const [anonymousQuestions, setAnonymousQuestions] = useState([]);
+  const [questionCommentInputs, setQuestionCommentInputs] = useState({});
   const [newQuestion, setNewQuestion] = useState("");
 
   useEffect(() => {
@@ -85,13 +87,35 @@ function Dashboard() {
   };
 
   const fetchAnonymousQuestions = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/anonymous-questions`);
-      setAnonymousQuestions(res.data);
-    } catch (err) {
-      console.error("Error fetching anonymous questions:", err);
-    }
-  };
+  try {
+    const res = await axios.get(`${API_BASE}/anonymous-questions`);
+
+    const questionsWithComments = await Promise.all(
+      res.data.map(async (q) => {
+        try {
+          const commentsRes = await axios.get(
+            `${API_BASE}/anonymous-questions/${q.id}/comments`
+          );
+
+          return {
+            ...q,
+            comments: commentsRes.data,
+          };
+        } catch (err) {
+          console.error("Error fetching comments for question:", q.id, err);
+          return {
+            ...q,
+            comments: [],
+          };
+        }
+      })
+    );
+
+    setAnonymousQuestions(questionsWithComments);
+  } catch (err) {
+    console.error("Error fetching anonymous questions:", err);
+  }
+};
 
   const handleAddAnonymousQuestion = async (e) => {
     e.preventDefault();
@@ -113,7 +137,31 @@ function Dashboard() {
       alert("Failed to add question");
     }
   };
+const handleAddQuestionComment = async (questionId) => {
+  const comment = questionCommentInputs[questionId];
 
+  if (!comment || !comment.trim()) {
+    alert("Please write a comment first");
+    return;
+  }
+
+  try {
+    await axios.post(`${API_BASE}/anonymous-questions/${questionId}/comments`, {
+      userId: user.id,
+      comment,
+    });
+
+    setQuestionCommentInputs((prev) => ({
+      ...prev,
+      [questionId]: "",
+    }));
+
+    await fetchAnonymousQuestions();
+  } catch (err) {
+    console.error("Error adding comment:", err.response?.data || err.message);
+    alert(err.response?.data?.message || "Failed to add comment");
+  }
+};
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -407,16 +455,48 @@ function Dashboard() {
               {anonymousQuestions.length === 0 ? (
                 <p>No questions yet.</p>
               ) : (
-                anonymousQuestions.map((item) => (
-                  <div key={item.id} className="anonymous-card">
-                    <strong>Anonymous Parent</strong>
-                    <p>{item.question}</p>
-                  </div>
-                ))
+          anonymousQuestions.map((item) => (
+  <div key={item.id} className="anonymous-card">
+    <strong>Anonymous Parent</strong>
+    <p>{item.question}</p>
+
+    <div className="question-comments">
+      <h4>Comments</h4>
+
+      {item.comments && item.comments.length > 0 ? (
+        item.comments.map((c) => (
+          <div key={c.id} className="question-comment">
+            <b>{c.name || "User"}:</b> {c.comment}
+          </div>
+        ))
+      ) : (
+        <p className="no-comments">No comments yet.</p>
+      )}
+    </div>
+
+    <div className="question-comment-form">
+      <input
+        type="text"
+        placeholder="Write a comment..."
+        value={questionCommentInputs[item.id] || ""}
+        onChange={(e) =>
+          setQuestionCommentInputs({
+            ...questionCommentInputs,
+            [item.id]: e.target.value,
+          })
+        }
+      />
+
+      <button onClick={() => handleAddQuestionComment(item.id)}>
+        Comment
+      </button>
+    </div>
+  </div>
+))
               )}
             </div>
           </section>
-
+        
           <div className="topics">
             {topics.map((t) => (
               <div key={t.title} className="topic-card">
