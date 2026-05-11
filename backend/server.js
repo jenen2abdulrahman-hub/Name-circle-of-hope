@@ -120,7 +120,33 @@ await runQuery(`
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
+await runQuery(`
+  CREATE TABLE IF NOT EXISTS stories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    text TEXT,
+    image VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`);
 
+await runQuery(`
+  CREATE TABLE IF NOT EXISTS resource_ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    resource_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating INT NOT NULL,
+    UNIQUE KEY unique_rating (resource_id, user_id)
+  )
+`);
+
+await runQuery(`
+  CREATE TABLE IF NOT EXISTS anonymous_questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`);
   await runQuery(`
     CREATE TABLE IF NOT EXISTS likes (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -405,8 +431,8 @@ app.post("/posts-with-image", upload.single("image"), async (req, res) => {
 });
 
 app.delete("/posts/:id", async (req, res) => {
-  try {
-    app.deawait; runQuery("DELETE FROM comments WHERE post_id=?", [req.params.id]);
+  try {await runQuery("DELETE FROM comments WHERE post_id=?", [req.params.id]);
+    
     await runQuery("DELETE FROM likes WHERE post_id=?", [req.params.id]);
     await runQuery("DELETE FROM posts WHERE id=?", [req.params.id]);
 
