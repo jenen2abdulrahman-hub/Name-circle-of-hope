@@ -757,6 +757,7 @@ app.post("/anonymous-questions", (req, res) => {
     return res.status(400).json({ message: "Question is required" });
   }
 
+
   const sql = `
     INSERT INTO anonymous_questions (question)
     VALUES (?)
@@ -777,6 +778,7 @@ app.post("/anonymous-questions", (req, res) => {
     });
   });
 });
+
 app.get("/anonymous-questions/:id/comments", (req, res) => {
   const questionId = req.params.id;
 

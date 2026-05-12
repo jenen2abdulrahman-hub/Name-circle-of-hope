@@ -89,6 +89,15 @@ async function initializeDatabase() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
+  await runQuery(`
+  CREATE TABLE IF NOT EXISTS anonymous_question_comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`);
 await runQuery(`
   CREATE TABLE IF NOT EXISTS notifications (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -1324,11 +1333,15 @@ app.delete("/admin/resources/:id", async (req, res) => {
 });
 /* START */
 
-db.connect(async (err) => {
+db.getConnection((err, connection) => {
   if (err) {
     console.log("DB ERROR:", err);
     return;
   }
+
+  console.log("MySQL Connected");
+  connection.release();
+});
 
   console.log("MySQL Connected");
 
@@ -1380,5 +1393,4 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
 });
