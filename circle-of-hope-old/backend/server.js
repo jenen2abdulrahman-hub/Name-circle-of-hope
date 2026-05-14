@@ -17,7 +17,7 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-app.use("/uploads", express.static(uploadsDir));
+app.use("/uploads", express.static("uploads"));
 
 app.get("/test-file", (req, res) => {
   res.sendFile(path.join(__dirname, "uploads", "test.jpg"));
@@ -31,10 +31,10 @@ app.get("/debug-uploads", (req, res) => {
 });
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "circle_of_hope",
+  host: "bczwmoc6p1vzdxgiuqkz-mysql.services.clever-cloud.com",
+  user: "uoboubew7x7mwnqa",
+  password: "TxVS3tiypPNNIziVyhk1",
+  database: "bczwmoc6p1vzdxgiuqkz",
 });
 
 const storage = multer.diskStorage({
@@ -1530,10 +1530,15 @@ db.connect(async (err) => {
   } catch (error) {
     console.log("DATABASE INIT ERROR:", error);
   }
+
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+});
+
+
   
 
 
- app.listen(5000, "0.0.0.0", () => {
-  console.log("Server running on port 5000");
-});
-});
