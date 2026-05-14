@@ -1524,8 +1524,8 @@ db.connect(async (err) => {
   console.log("MySQL Connected");
 
   try {
-    await initializeDatabase();
-    await initializeChatTables();
+     initializeDatabase();
+    initializeChatTables();
     console.log("Database initialized");
   } catch (error) {
     console.log("DATABASE INIT ERROR:", error);
