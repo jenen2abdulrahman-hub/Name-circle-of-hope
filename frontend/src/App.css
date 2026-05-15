@@ -4288,4 +4288,55 @@ textarea {
   .specialist-ai-box {
     min-width: 100%;
   }
+}.rightbar-drawer {
+  position: relative;
+  width: 280px;
+  min-width: 280px;
+  transition: all 0.35s ease;
+  overflow: visible;
+  background: #f8fafc;
+  border-left: 1px solid #eee;
+  z-index: 50;
+}
+
+.rightbar-drawer.open {
+  width: 280px;
+  min-width: 280px;
+}
+
+.rightbar-drawer.closed {
+  width: 22px;
+  min-width: 22px;
+}
+
+.rightbar-drawer .rightbar {
+  width: 280px;
+  transition: transform 0.35s ease;
+}
+
+.rightbar-drawer.closed .rightbar {
+  transform: translateX(280px);
+}
+
+.drawer-tab {
+  position: absolute;
+  left: 0;
+  top: 45%;
+  width: 22px;
+  height: 70px;
+  border: none;
+  border-radius: 10px 0 0 10px;
+  background: #2d6cdf;
+  color: white;
+  cursor: pointer;
+  font-size: 22px;
+  z-index: 9999;
+} .messages-page-wrapper {
+  display: flex;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+.messages-page {
+  flex: 1;
 }

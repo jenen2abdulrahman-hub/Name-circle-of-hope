@@ -1,6 +1,6 @@
 import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebar";
-import Rightbar from "./components/Rightbar";
+import RightbarDrawer from "./components/RightbarDrawer";
 import "./App.css";
 
 function Layout({ children }) {
@@ -11,11 +11,9 @@ function Layout({ children }) {
       <div className="main-layout">
         <Sidebar />
 
-        <div className="feed">
-          {children}
-        </div>
+        <div className="feed">{children}</div>
 
-        <Rightbar />
+        <RightbarDrawer />
       </div>
     </>
   );

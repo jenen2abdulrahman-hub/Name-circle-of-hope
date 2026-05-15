@@ -11,26 +11,19 @@ function Topbar() {
       <div className="topbar-left">
         <h2>Circle of Hope</h2>
       </div>
-
-      <div className="topbar-center">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="topbar-search"
-        />
-      </div>
-
       <div className="topbar-right">
         <Link to="/profile">
           <img
-            src={
-              user?.profile_pic
-                ? `${API_BASE}${user.profile_pic}`
-                : "https://via.placeholder.com/40"
-            }
-            className="topbar-img"
-            alt="profile"
-          />
+  src={
+    user?.profile_pic
+      ? user.profile_pic.startsWith("http")
+        ? user.profile_pic
+        : `${API_BASE}${user.profile_pic}`
+      : "https://via.placeholder.com/40"
+  }
+  className="topbar-img"
+  alt="profile"
+/>
         </Link>
       </div>
     </div>

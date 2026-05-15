@@ -1,12 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebar";
-import Rightbar from "./components/Rightbar";
+import RightbarDrawer from "./components/RightbarDrawer";
 import "./App.css";
-
-const API_BASE = "https://circle-of-hope-backend.onrender.com";
-
 const quickExamples = [
   "My child gets upset from loud sounds",
   "How can I help my child communicate better?",
@@ -18,7 +14,7 @@ function SpecialistAdvice() {
   const [question, setQuestion] = useState("");
   const [advice, setAdvice] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [showTips, setShowTips] = useState(true);
   const handleGetAdvice = async (e) => {
     e.preventDefault();
 
@@ -29,29 +25,35 @@ function SpecialistAdvice() {
 
     try {
       setLoading(true);
+setAdvice({
+  source: "General Advice",
+  category: "General Support",
+  title: "Specialist Advice",
+  answer:
+    "The child may be reacting to a trigger such as change in routine, sensory overload, hunger, tiredness, or communication difficulty.\n\nWhat you can try:\n1. Observe what happened before the behavior.\n2. Use a calm voice and simple words.\n3. Try visual support or a clear routine.\n4. Write down repeated triggers.\n5. Ask a specialist if the concern continues.",
+});
+    }  catch (err) {
+  console.log("FULL ERROR:", err);
+  console.log("ERROR RESPONSE:", err.response?.data);
+  console.log("ERROR STATUS:", err.response?.status);
 
-      const res = await axios.post(`${API_BASE}/specialist-advice`, {
-        question,
-      });
-
-      setAdvice(res.data);
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Failed to get advice");
-    } finally {
+  alert(err.response?.data?.message || err.message || "Failed to get advice");
+}
+     finally {
       setLoading(false);
     }
   };
 
   return (
     <>
-      <Topbar />
+      
 
       <div className="main-layout">
         <Sidebar />
 
         <div className="feed">
           <section className="specialist-hero">
+            
             <div>
               <span className="specialist-pill">🧠 Guide-Based Support</span>
 
@@ -183,8 +185,11 @@ function SpecialistAdvice() {
             )}
           </section>
         </div>
+      
 
-        <Rightbar />
+   
+<RightbarDrawer />
+
       </div>
     </>
   );

@@ -31,11 +31,13 @@ function Auth() {
   return;
 }
     try {
-      const url = isLogin
-           ? "https://circle-of-hope-backend.onrender.com/login"
-    : "https://circle-of-hope-backend.onrender.com/register";
+    const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
-      let res;
+const url = isLogin
+  ? `${API_BASE}/login`
+  : `${API_BASE}/register`;
+
+let res;
 
 if (isLogin) {
   res = await axios.post(url, form);

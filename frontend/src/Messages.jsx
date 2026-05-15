@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "./Layout";
 import "./App.css";
-
 const API_BASE = "https://circle-of-hope-backend.onrender.com";
 
 function Messages() {
@@ -90,6 +89,7 @@ function Messages() {
 
   return (
     <Layout>
+      <div className="messages-page-wrapper">
       <div className="messages-page">
         <div className="messages-header">
           <div>
@@ -193,8 +193,12 @@ function Messages() {
               </>
             )}
           </section>
+           
+           </div>
         </div>
+         
       </div>
+      
     </Layout>
   );
 }

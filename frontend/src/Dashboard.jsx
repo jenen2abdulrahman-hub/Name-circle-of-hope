@@ -7,7 +7,6 @@ import "./App.css";
 import SpecialistAdvice from "./SpecialistAdvice";
 
 const API_BASE = "https://circle-of-hope-backend.onrender.com";
-
 const topics = [
   { title: "Autism Support", icon: "🧩" },
   { title: "Behavior Tips", icon: "🧠" },
@@ -312,7 +311,7 @@ const handleAddQuestionComment = async (questionId) => {
 
   return (
     <>
-      <Topbar />
+      
 
       <div className="main-layout">
         <Sidebar />

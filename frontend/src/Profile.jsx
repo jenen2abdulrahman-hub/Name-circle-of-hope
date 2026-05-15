@@ -107,10 +107,24 @@ function Profile() {
         }
       );
 
-      const updatedUser = res.data.user;
+     console.log("UPLOAD RESPONSE:", res.data);
 
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
+const uploadedPath =
+  res.data.profile_pic ||
+  res.data.image ||
+  res.data.filePath ||
+  res.data.user?.profile_pic;
+
+const updatedUser = {
+  ...user,
+  ...(res.data.user || {}),
+  profile_pic: uploadedPath || user.profile_pic,
+};
+
+console.log("UPDATED USER:", updatedUser);
+
+localStorage.setItem("user", JSON.stringify(updatedUser));
+setUser(updatedUser);
       setImage(null);
       setPreview("");
       setMessage("Profile picture updated successfully");
@@ -195,7 +209,9 @@ function Profile() {
                   preview
                     ? preview
                     : user.profile_pic
-                    ? `${API_BASE}${user.profile_pic}?t=${Date.now()}`
+                    ? user.profile_pic.startsWith("http")
+                    ? user.profile_pic
+                     : `${API_BASE}${user.profile_pic}?t=${Date.now()}`
                     : `https://ui-avatars.com/api/?name=${encodeURIComponent(
                         user.name
                       )}&background=2d6cdf&color=fff`
@@ -347,17 +363,16 @@ function Profile() {
                         to={`/profile/${u.id}`}
                         className="follower-row-modern"
                       >
-                        <img
-                          src={
-                            u.profile_pic
-                              ? `${API_BASE}${u.profile_pic}`
-                              : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                                  u.name
-                                )}&background=2d6cdf&color=fff`
-                          }
-                          alt={u.name}
-                        />
-
+                  <img
+                   src={
+                   u.profile_pic
+                   ? `${API_BASE}${u.profile_pic}`
+                   : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    u.name
+                       )}&background=2d6cdf&color=fff`
+                     }
+                       alt={u.name}
+                      />
                         <strong>{u.name}</strong>
                       </Link>
                     ))}
